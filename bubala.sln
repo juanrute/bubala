@@ -1,8 +1,12 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bubala.Api", "Bubala.Api\Bubala.Api.csproj", "{A573CD04-9711-5346-B29C-43AE0721D219}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bubala.Contracts", "Bubala.Contracts\Bubala.Contracts.csproj", "{72C478AD-E419-4841-AFC7-032CAE17AADF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bubala.Application", "Bubala.Application\Bubala.Application.csproj", "{FF139B90-788A-47C7-89DC-1A85E778794B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,6 +18,14 @@ Global
 		{A573CD04-9711-5346-B29C-43AE0721D219}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A573CD04-9711-5346-B29C-43AE0721D219}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A573CD04-9711-5346-B29C-43AE0721D219}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72C478AD-E419-4841-AFC7-032CAE17AADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72C478AD-E419-4841-AFC7-032CAE17AADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72C478AD-E419-4841-AFC7-032CAE17AADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72C478AD-E419-4841-AFC7-032CAE17AADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF139B90-788A-47C7-89DC-1A85E778794B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF139B90-788A-47C7-89DC-1A85E778794B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF139B90-788A-47C7-89DC-1A85E778794B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF139B90-788A-47C7-89DC-1A85E778794B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
