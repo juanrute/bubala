@@ -28,6 +28,11 @@ public class ProductRepository : IProductRepository
         return Task.FromResult(_products.FirstOrDefault(p => p.Id == id));
     }
 
+    public Task<Product?> GetBySlugAsync(string slug)
+    {
+        return Task.FromResult(_products.FirstOrDefault(p => p.Slug == slug));
+    }
+
     public Task<bool> UpdateAsync(Product product)
     {
         var productIndexToUpdate = _products.FindIndex(p => p.Id == product.Id);

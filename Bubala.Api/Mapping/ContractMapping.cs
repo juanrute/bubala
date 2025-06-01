@@ -23,6 +23,7 @@ public static class ContractMapping
         {
             Id = product.Id,
             Name = product.Name,
+            Slug = product.Slug,
             Quantity = product.Quantity,
             FruitType = product.FruitType.AsEnumerable()
         };

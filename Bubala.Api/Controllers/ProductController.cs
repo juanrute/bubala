@@ -23,13 +23,16 @@ public class ProductController : ControllerBase
     {
         var product = createProductRequest.MapToProduct();
         await _productRepository.CreateAsync(product);
-        return CreatedAtAction(nameof(Get), new { id = product.Id }, product);
+        return CreatedAtAction(nameof(Get), new { idOrSlug = product.Id }, product);
     }
 
     [HttpGet(ApiEndpoints.Product.Get)]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> Get(string idOrSlug)
     {
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = Guid.TryParse(idOrSlug, out Guid id) ?
+            await _productRepository.GetByIdAsync(id) :
+            await _productRepository.GetBySlugAsync(idOrSlug);
+        
         if (product is null)
         {
             return NotFound();
