@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Bubala.Application.Repositories;
-using Bubala.Application.Models;
 using Bubala.Contracts.Requests;
 using Bubala.Api.Mapping;
-using Bubala.Api;
-
 
 namespace Bubala.Api.AddControllers;
 
