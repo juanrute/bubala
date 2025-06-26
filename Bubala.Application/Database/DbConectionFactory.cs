@@ -5,7 +5,7 @@ namespace Bubala.Application.Database;
 
 public interface IDbConnectionFactory
 {
-    Task<IDbConnection> CreateConectionAsync();
+    Task<IDbConnection> CreateConectionAsync(CancellationToken cancellationToken = default);
 }
 
 public class NpgsqlConnectionFactory : IDbConnectionFactory
@@ -16,10 +16,10 @@ public class NpgsqlConnectionFactory : IDbConnectionFactory
         _connectionString = connectionString;
     }
 
-    public async Task<IDbConnection> CreateConectionAsync()
+    public async Task<IDbConnection> CreateConectionAsync(CancellationToken cancellationToken = default)
     {
         var connection = new NpgsqlConnection(_connectionString);
-        await connection.OpenAsync();
+        await connection.OpenAsync(cancellationToken);
         return connection;
     }
 }

@@ -7,6 +7,8 @@ public class Product
     public required Guid Id { get; init; }
     public required string Name { get; set; }
     public string Slug => GenerateSlug();
+    public float? Review { get; set; }
+    public int? UserReview { get; set; }
     public required string Quantity { get; set; }
     public required List<string> FruitType { get; init; } = new();
     public string GenerateSlug()
