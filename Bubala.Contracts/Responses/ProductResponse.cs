@@ -5,6 +5,8 @@ public class ProductResponse
     public required Guid Id { get; init; }
     public required string Name { get; init; }
     public required string Slug { get; init; }
+    public int? UserReviews { get; init; }
+    public float? Review { get; init; }
     public required string Quantity { get; init; }
     public required IEnumerable<string> FruitType { get; init; } = Enumerable.Empty<string>();
  }

@@ -33,5 +33,15 @@ public class DbInitializer
                 type_name text not null
             )
         """);
+
+        await connection.ExecuteAsync("""
+            create table if not exists reviews (
+                userid uuid,
+                productid uuid references product(id),
+                review integer not null, 
+                primary key (userid,productid)
+            );            
+        """);
+
     }
 }

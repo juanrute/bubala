@@ -16,9 +16,9 @@ public class ProductValidator : AbstractValidator<Product>
             .NotEmpty();
         RuleFor(p => p.Name)
             .NotEmpty();
-        RuleFor(p => p.Slug)
-            .MustAsync(ValidateSlug)
-            .WithMessage("This product already exists in the system");
+        // RuleFor(p => p.Slug)
+        //     .MustAsync(ValidateSlug)
+        //     .WithMessage("This product already exists in the system");
     }
 
     private async Task<bool> ValidateSlug(Product product, string slug, CancellationToken cancelationToken = default)

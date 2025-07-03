@@ -37,30 +37,30 @@ public class ProductRepository : IProductRepository
         return result > 0;
     }
 
-    public async Task<bool> DeleteByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteByIdAsync(Guid productId, CancellationToken cancellationToken = default)
     {
         using var connection = await _dbConnectionFactory.CreateConectionAsync(cancellationToken);
         var transaction = connection.BeginTransaction();
         var result = await connection.ExecuteAsync(new CommandDefinition("""
-            delete from product where id=@id
-        """,new { id }, cancellationToken: cancellationToken));
+            delete from product where id=@productId
+        """,new { productId }, cancellationToken: cancellationToken));
         if (result > 0)
         {
             await connection.ExecuteAsync(new CommandDefinition("""
-            delete from fruit_type where id = @id
-            """, new { id }, cancellationToken: cancellationToken));
+            delete from fruit_type where id = @productId
+            """, new { productId }, cancellationToken: cancellationToken));
         }
 
         transaction.Commit();
         return result > 0;
     }
 
-    public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistsByIdAsync(Guid productId, CancellationToken cancellationToken = default)
     {
         using var connection = await _dbConnectionFactory.CreateConectionAsync(cancellationToken);
         return await connection.ExecuteScalarAsync<bool>(new CommandDefinition("""
-            select count(1) from product where id=@id
-        """,new { id }, cancellationToken: cancellationToken));
+            select count(1) from product where id=@productId
+        """,new { productId }, cancellationToken: cancellationToken));
     }
 
     public async Task<IEnumerable<Product>> GetAllAsync(Guid? userId = default, CancellationToken cancellationToken = default)
@@ -69,15 +69,15 @@ public class ProductRepository : IProductRepository
         var result = await connection.QueryAsync(new CommandDefinition("""
             select 
                 p.*, 
-                string_agg(distinct ft.type_name,',') as types, 
-                round(avg(r.review),1) as review, 
+                string_agg(distinct ft.type_name,',') as types,
+                round(avg(r.review),1) as review,
                 myr.review as userreview
-            from product as p 
-                left join fruit_type as ft on p.id = ft.id
-                left join reviews r on p.id = r.movieid
-                left join reviews myr on p.id = myr.movieid 
+            from product p 
+                left join fruit_type ft on p.id = ft.id
+                left join reviews r on p.id = r.productid
+                left join reviews myr on p.id = myr.productid 
                     and myr.userid = @userId
-            group by p.id
+            group by p.id,userreview
         """, new { userId }, cancellationToken: cancellationToken));
 
         return result.Select(x => new Product
@@ -92,26 +92,26 @@ public class ProductRepository : IProductRepository
         );
     }
 
-    public async Task<Product?> GetByIdAsync(Guid id, Guid? userId = default, CancellationToken cancellationToken = default)
+    public async Task<Product?> GetByIdAsync(Guid productId, Guid? userId = default, CancellationToken cancellationToken = default)
     {
         using var connection = await _dbConnectionFactory.CreateConectionAsync(cancellationToken);
         var product = await connection.QuerySingleOrDefaultAsync<Product>(
             new CommandDefinition("""
             select p.* , round(avg(r.review),1) as review, myr.review as userreview
             from product p 
-                left join reviews r on p.id = r.movieid
-                left join reviews myr on p.id = myr.movieid and myr.userid = @userId
-            where id = @id
-            group by id,userreview
-            """, new { id ,userId}, cancellationToken: cancellationToken));
+                left join reviews r on p.id = r.productid
+                left join reviews myr on p.id = myr.productid and myr.userid = @userId
+            where p.id = @productId
+            group by p.id,userreview
+            """, new { productId ,userId}, cancellationToken: cancellationToken));
         if (product is null)
         {
             return null;
         }
         var fruitType = await connection.QueryAsync<string>(
             new CommandDefinition("""
-            select * from fruit_type where id = @id
-            """, new { id }, cancellationToken: cancellationToken));
+            select type_name from fruit_type where id = @productId
+            """, new { productId }, cancellationToken: cancellationToken));
         foreach (var type in fruitType)
         {
             product.FruitType.Add(type);
@@ -127,10 +127,10 @@ public class ProductRepository : IProductRepository
         new CommandDefinition("""
             select p.* , round(avg(r.review),1) as review, myr.review as userreview
             from product p 
-                left join reviews r on p.id = r.movieid
-                left join reviews myr on p.id = myr.movieid and myr.userid = @userId
+                left join reviews r on p.id = r.productid
+                left join reviews myr on p.id = myr.productid and myr.userid = @userId
             where slug = @slug
-            group by id,userreview
+            group by p.id,userreview
             """, new { slug ,userId}, cancellationToken: cancellationToken));
         if (product is null)
         {
@@ -138,7 +138,7 @@ public class ProductRepository : IProductRepository
         }
         var fruitType = await connection.QueryAsync<string>(
             new CommandDefinition("""
-            select * from fruit_type where id = @id
+            select type_name from fruit_type where id = @id
             """, new { id = product.Id }, cancellationToken: cancellationToken));
         foreach (var type in fruitType)
         {

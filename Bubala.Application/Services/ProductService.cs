@@ -60,8 +60,8 @@ public class ProductService : IProductService
 
     public async Task<Product?> GetByIdOrSlugAsync(string idOrSlug, Guid? userId, CancellationToken cancellationToken = default)
     {
-        var product = Guid.TryParse(idOrSlug, out Guid id) ?
-            await _productRepository.GetByIdAsync(id, userId, cancellationToken) :
+        var product = Guid.TryParse(idOrSlug, out Guid productId) ?
+            await _productRepository.GetByIdAsync(productId, userId, cancellationToken) :
             await _productRepository.GetBySlugAsync(idOrSlug, userId, cancellationToken);
         return product;
     }
